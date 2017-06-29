@@ -21,13 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ITtong/weeklySystem.git"
+    "url": "git+https://github.com/heyan01/weeklySystem.git"
+
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ITtong/weeklySystem/issues"
+    "url": "https://github.com/heyan01/weeklySystem/issues"
   },
-  "homepage": "https://github.com/ITtong/weeklySystem#readme"
+  "homepage": "https://github.com/heyan01/weeklySystem#readme"
 }
