@@ -19,7 +19,7 @@ db.then(()=>{
 
 
 
-const router = require('./routes/index');
+//const router = require('./routes/index');
 const api = require('./api/api');
 
 // middlewares
@@ -28,7 +28,7 @@ app.use(convert(json()));
 app.use(convert(logger()));
 app.use(require('koa-static')(__dirname + '/public'));
 
-app.use(views(__dirname + '/views', {
+app.use(views(__dirname + '/dist', {
   map : {html:'ejs'}
 }));
 
@@ -41,7 +41,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(api.routes(), api.allowedMethods());
-app.use(router.routes(), router.allowedMethods());
+//app.use(router.routes(), router.allowedMethods());
 
 
 app.on('error', function(err, ctx){
