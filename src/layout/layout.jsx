@@ -21,7 +21,7 @@ export default class Mainlayout extends React.Component {
 			        <Menu
 				        theme="dark"
 				        mode="horizontal"
-				        defaultSelectedKeys={['2']}
+				        defaultSelectedKeys={['1']}
 				        style={{ lineHeight: '64px' }}
 			        >
 				        <Menu.Item key="1">nav 1</Menu.Item>
@@ -31,9 +31,7 @@ export default class Mainlayout extends React.Component {
 			    </Header>
 			    <Content style={{ padding: '0 50px' }}>
 			        <Breadcrumb style={{ margin: '12px 0' }}>
-				        <Breadcrumb.Item>Home</Breadcrumb.Item>
-				        <Breadcrumb.Item>List</Breadcrumb.Item>
-				        <Breadcrumb.Item>App</Breadcrumb.Item>
+
 			        </Breadcrumb>
 			        <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>{this.props.children}</div>
 			    </Content>
