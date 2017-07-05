@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/nodemon bin/run",
+    "react": "webpack --display-chunks --verbose --display-reasons --colors --w",
     "koa": "./node_modules/.bin/runkoa bin/www",
     "pm2": "pm2 start bin/run ",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -28,7 +29,9 @@
     "antd": "^2.11.2",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
+    "babel-plugin-import": "^1.2.1",
     "babel-preset-env": "^1.5.2",
+    "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.4",
     "nodemon": "^1.8.1",
     "react": "^15.6.1",
