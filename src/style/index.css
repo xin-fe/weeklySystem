@@ -21,7 +21,7 @@
 
 .editable-cell-icon {
     line-height: 18px;
-    display: none;
+    display: inline-block;
 }
 
 .editable-cell-icon-check {

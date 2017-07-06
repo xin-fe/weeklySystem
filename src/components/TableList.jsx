@@ -1,4 +1,6 @@
 import React from 'react'
+import sendFetch from '../utils/fetch'
+import getParameter from '../utils/getParameter'
 import { Table, Input, Icon, Button, Popconfirm,DatePicker } from 'antd';
 import '../style/index.css'
 
@@ -60,6 +62,23 @@ class EditableCell extends React.Component {
 
 
 export default class TableList extends React.Component {
+    state = {
+        dataSource:[
+            {
+                key:'0',
+                name:'',
+                content:'',
+                start_time:'',
+                test_time:'',
+                online_time:'',
+                remark:''
+            }
+        ],
+        count:1,
+        id:getParameter('id'),
+        title:'',
+        create_time:'',
+    }
 	constructor (props) {
 		super (props)
         this.columns = [
@@ -138,26 +157,46 @@ export default class TableList extends React.Component {
         ]
 	}
 	conponmentWillMount () {
-
+        let id = getParameter('id');
+        let oDate = new Date();
+        let title = `${oDate.getFullYear()}年${oDate.getMonth()+1}月${oDate.getDate()}日周报`;
+        let create_time = `${oDate.getFullYear()}-${oDate.getMonth()+1}-${oDate.getDate()}`;
+        if(id) {
+            sendFetch('api/getDetail',{id},'get')
+                .then((data)=>{
+                    this.setState({
+                        dataSource:data.dataSource,
+                        count:data.count
+                    })
+                })
+        }
+        this.setSate({title, create_time})
 	}
 	componentDidMount () {
 
 	}
-	state = {
-	    dataSource:[
-            {
-                key:'0',
-                name:' ',
-                content:' ',
-                start_time:' ',
-                test_time:' ',
-                online_time:' ',
-                remark:' '
-            }
-        ],
-        count:1
+	
+    formatDate = (date)=> {
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+        return year + "-" + this.formatTen(month) + "-" + this.formatTen(day);
     }
-	onCellChange = (index, key) =>{
+    formatTen = (num) => {
+        return num > 9 ? (num + "") : ("0" + num);
+    }
+    onCellChange = (index, key) =>{
+        if(key === 'start_time' || key === 'test_time' || key === 'online_time') {
+            return (value)=>{
+                let date = this.formatDate(value._d);
+                const dataSource = [...this.state.dataSource];
+                dataSource[index][key] = date;
+                this.setState({ dataSource })
+            }
+        }
         return (value)=>{
             const dataSource = [...this.state.dataSource];
             dataSource[index][key] = value;
@@ -185,14 +224,27 @@ export default class TableList extends React.Component {
             count:count+1
         })
     }
-
+    save = () =>{
+        console.log(this.state)
+        sendFetch('api/save',this.state,'post')
+            .then((data)=>{
+                if(data.code === 0) {
+                    alert(data.msg);
+                    location.href = '#/';
+                    location.reload();
+                } else {
+                    alert(data.msg)
+                }
+            })
+    }
 	render () {
 	    const {dataSource} = this.state;
         const columns = this.columns;
 
 		return (
             <div>
-                <Button className="editable-add-btn" onClick={this.handleAdd} >添加</Button>
+                <Button className="editable-add-btn" style={{ marginRight:15 }} onClick={this.handleAdd} >添加</Button>
+                <Button className="editable-add-btn" onClick={this.save} >保存</Button>
                 <Table bordered dataSource={dataSource} columns={columns} />
             </div>
 		)

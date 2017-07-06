@@ -6,6 +6,7 @@ const convert = require('koa-convert');
 const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
+const koabody = require('koa-body')();
 const logger = require('koa-logger');
 const ejs = require('ejs');
 const monk = require('monk');
@@ -17,13 +18,9 @@ db.then(()=>{
 	console.log('Connected correctly to server')
 })
 
-
-
-const router = require('./routes/index');
-const api = require('./api/api');
-
 // middlewares
-app.use(convert(bodyparser));
+//app.use(convert(bodyparser));
+app.use(convert(koabody));
 app.use(convert(json()));
 app.use(convert(logger()));
 app.use(require('koa-static')(__dirname + '/dist'));
@@ -39,6 +36,10 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start;
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
+
+
+const router = require('./routes/index');
+const api = require('./api/api');
 
 app.use(api.routes(), api.allowedMethods());
 app.use(router.routes(), router.allowedMethods());
