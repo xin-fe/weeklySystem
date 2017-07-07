@@ -139,10 +139,11 @@ export default class TableList extends React.Component {
             }
         ];
         let id = getParameter('id');
+        let add = getParameter('add');
         let oDate = new Date();
         let title = `${oDate.getFullYear()}年${oDate.getMonth()+1}月${oDate.getDate()}日周报`;
         let create_time = `${oDate.getFullYear()}-${oDate.getMonth()+1}-${oDate.getDate()}`;
-        if(id) {
+        if(add) {
             sendFetch('api/getDetail',{id},'get')
                 .then((data)=>{
                     if(data.code === 0) {
@@ -180,10 +181,11 @@ export default class TableList extends React.Component {
 	}
 	componentWillMount () {
         let id = getParameter('id');
+        let add = getParameter('add')
         let oDate = new Date();
         let title = `${oDate.getFullYear()}年${oDate.getMonth()+1}月${oDate.getDate()}日周报`;
         let create_time = `${oDate.getFullYear()}-${oDate.getMonth()+1}-${oDate.getDate()}`;
-        if(id) {
+        if(add) {
             sendFetch('api/getDetail',{id},'get')
                 .then((data)=>{
                     if(data.code === 0) {

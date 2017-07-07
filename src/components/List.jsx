@@ -50,7 +50,7 @@ export default class List extends React.Component {
 		
 	}
 	handleAdd = () =>{
-		location.href = `#/Detail?id=${this.state.id+1}`;
+		location.href = `#/Detail?id=${this.state.id+1}&add=1`;
 
 	}
 	render () {

@@ -54925,10 +54925,11 @@ var TableList = function (_React$Component2) {
             }
         }];
         var id = (0, _getParameter2.default)('id');
+        var add = (0, _getParameter2.default)('add');
         var oDate = new Date();
         var title = oDate.getFullYear() + '\u5E74' + (oDate.getMonth() + 1) + '\u6708' + oDate.getDate() + '\u65E5\u5468\u62A5';
         var create_time = oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate();
-        if (id) {
+        if (add) {
             (0, _fetch2.default)('api/getDetail', { id: id }, 'get').then(function (data) {
                 if (data.code === 0) {
                     _this2.state = {
@@ -54969,10 +54970,11 @@ var TableList = function (_React$Component2) {
             var _this3 = this;
 
             var id = (0, _getParameter2.default)('id');
+            var add = (0, _getParameter2.default)('add');
             var oDate = new Date();
             var title = oDate.getFullYear() + '\u5E74' + (oDate.getMonth() + 1) + '\u6708' + oDate.getDate() + '\u65E5\u5468\u62A5';
             var create_time = oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate();
-            if (id) {
+            if (add) {
                 (0, _fetch2.default)('api/getDetail', { id: id }, 'get').then(function (data) {
                     if (data.code === 0) {
                         _this3.setState({
@@ -75068,7 +75070,7 @@ var List = function (_React$Component) {
 		};
 
 		_this.handleAdd = function () {
-			location.href = '#/Detail?id=' + (_this.state.id + 1);
+			location.href = '#/Detail?id=' + (_this.state.id + 1) + '&add=1';
 		};
 
 		_this.columns = [{
