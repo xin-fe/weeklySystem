@@ -10,8 +10,8 @@ import List from './components/List.jsx';
 
 ReactDom.render((<HashRouter history={hashHistory}>
 	<MainLayout>
-		<Route path='#/Detail' component={TableList} />
-		<Route path='#/' component={List} />
+		<Route path='/Detail' component={TableList} />
+		<Route path='/Home' component={List} />
 	</MainLayout>
 </HashRouter>),document.getElementById('root'))
 

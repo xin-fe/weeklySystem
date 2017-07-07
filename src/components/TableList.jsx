@@ -62,23 +62,6 @@ class EditableCell extends React.Component {
 
 
 export default class TableList extends React.Component {
-    state = {
-        dataSource:[
-            {
-                key:'0',
-                name:'',
-                content:'',
-                start_time:'',
-                test_time:'',
-                online_time:'',
-                remark:''
-            }
-        ],
-        count:1,
-        id:getParameter('id'),
-        title:'',
-        create_time:'',
-    }
 	constructor (props) {
 		super (props)
         this.columns = [
@@ -113,21 +96,21 @@ export default class TableList extends React.Component {
                 width:170,
                 dataIndex:'start_time',
                 render:(text,record,index)=>{
-                    return <DatePicker onChange={this.onCellChange(index, 'start_time')} />
+                    return <DatePicker placeholder={record.start_time} onChange={this.onCellChange(index, 'start_time')} />
                 }
             },{
                 title:'提测时间',
                 width:170,
                 dataIndex:'test_time',
                 render:(text,record,index)=>{
-                    return <DatePicker onChange={this.onCellChange(index, 'test_time')} />
+                    return <DatePicker placeholder={record.start_time} onChange={this.onCellChange(index, 'test_time')} />
                 }
             },{
                 title:'上线时间',
                 width:170,
                 dataIndex:'online_time',
                 render:(text,record,index)=>{
-                    return <DatePicker onChange={this.onCellChange(index, 'online_time')} />
+                    return <DatePicker placeholder={record.start_time} onChange={this.onCellChange(index, 'online_time')} />
                 }
             },{
                 title:'备注',
@@ -154,9 +137,7 @@ export default class TableList extends React.Component {
                     );
                 }
             }
-        ]
-	}
-	conponmentWillMount () {
+        ];
         let id = getParameter('id');
         let oDate = new Date();
         let title = `${oDate.getFullYear()}年${oDate.getMonth()+1}月${oDate.getDate()}日周报`;
@@ -164,25 +145,65 @@ export default class TableList extends React.Component {
         if(id) {
             sendFetch('api/getDetail',{id},'get')
                 .then((data)=>{
-                    this.setState({
-                        dataSource:data.dataSource,
-                        count:data.count
-                    })
+                    if(data.code === 0) {
+                        this.state = {
+                            dataSource:data.data.dataSource,
+                            count:data.data.count,
+                            key:id,
+                            id:id,
+                            title:title,
+                            create_time:create_time
+                        }
+                    }
+                })
+        } else {
+            this.state = {
+                dataSource:[
+                    {
+                        key:'0',
+                        name:'',
+                        content:'',
+                        start_time:'',
+                        test_time:'',
+                        online_time:'',
+                        remark:''
+                    }
+                ],
+                key:'',
+                count:1,
+                id:getParameter('id'),
+                title:'',
+                create_time:''
+            }
+        }
+
+	}
+	componentWillMount () {
+        let id = getParameter('id');
+        let oDate = new Date();
+        let title = `${oDate.getFullYear()}年${oDate.getMonth()+1}月${oDate.getDate()}日周报`;
+        let create_time = `${oDate.getFullYear()}-${oDate.getMonth()+1}-${oDate.getDate()}`;
+        if(id) {
+            sendFetch('api/getDetail',{id},'get')
+                .then((data)=>{
+                    if(data.code === 0) {
+                        this.setState({
+                            dataSource:data.data.dataSource,
+                            count:data.data.count,
+                        })
+                    }
                 })
         }
-        this.setSate({title, create_time})
+        this.setState({title, create_time, key:id})
 	}
 	componentDidMount () {
 
 	}
-	
+
     formatDate = (date)=> {
         let year = date.getFullYear();
         let month = date.getMonth() + 1;
         let day = date.getDate();
-        let hour = date.getHours();
-        let minute = date.getMinutes();
-        let second = date.getSeconds();
         return year + "-" + this.formatTen(month) + "-" + this.formatTen(day);
     }
     formatTen = (num) => {
@@ -230,7 +251,7 @@ export default class TableList extends React.Component {
             .then((data)=>{
                 if(data.code === 0) {
                     alert(data.msg);
-                    location.href = '#/';
+                    location.href = '#/Home';
                     location.reload();
                 } else {
                     alert(data.msg)

@@ -21,6 +21,18 @@ router
 		ctx.body = await collection.find()
 		db.close()
 	})
+    .get('/getDetail', async (ctx, next)=>{
+        let id = ctx.query.id;
+        let data = await collection.find({id});
+        console.log(data)
+        if(data.length==0) {
+            ctx.body = {
+                code:-1
+            }
+        } else {
+            ctx.body = {code:0,data:data[0]}
+        }
+    })
 	.get('/delete', async (ctx, next) =>{
 		// 清除数据
 		ctx.body = await collection.remove()

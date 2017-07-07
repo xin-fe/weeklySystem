@@ -5,7 +5,8 @@ import {Table,Button} from 'antd'
 
 export default class List extends React.Component {
 	state = {
-
+		dataList:[],
+		id:'',
 	}
 	constructor (props) {
 		super(props)
@@ -38,11 +39,19 @@ export default class List extends React.Component {
 	componentWillMount () {
 		sendFetch('api/findList', {},'get')
 			.then(data=>{
-				console.log(data)
+				let dataCount = data.length;
+				this.setState({
+					dataList:data,
+					id:dataCount
+				})
 			})
 	}
 	componentDidMount () {
 		
+	}
+	handleAdd = () =>{
+		location.href = `#/Detail?id=${this.state.id+1}`;
+
 	}
 	render () {
 		const { dataList } = this.state;
