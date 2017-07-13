@@ -2,28 +2,41 @@
 
 
 const router = require('koa-router')()
-const url = '127.0.0.1:27017/myProjectDb';
+const url = '47.93.224.33:27017/weeklyData';
 const db = require('monk')(url);
 const collection = db.get('document');
 
 router
 	.post('/save', async (ctx, next) =>{
 		let data = JSON.parse(ctx.request.body)
-		console.log(data)
-		let status = await collection.insert(data)
-		if(status == data) {
-			ctx.body = {code:0, msg:'保存成功'}
-		} else {
-			ctx.body = {code:-1, msg:'保存失败，请重新保存'}
-		}
+
+		let listAll = await collection.find();
+        let num = 0;
+		listAll.map((item,index)=>{
+			if(item.dataSource.length === data.dataSource.length) {
+
+                num++;
+                return
+            }
+		})
+        if(num>0) {
+            ctx.body = {code: -2, msg: '已保存此数据，无需重复保存！'};
+        } else {
+            let status = await collection.insert(data)
+            if(status == data) {
+                ctx.body = {code:0, msg:'保存成功'}
+            } else {
+                ctx.body = {code:-1, msg:'保存失败，请重新保存'}
+            }
+        }
 	})
 	.get('/findList', async (ctx, next)=>{
 		ctx.body = await collection.find()
 		db.close()
 	})
     .get('/getDetail', async (ctx, next)=>{
-        let id = ctx.query.id;
-        let data = await collection.find({id});
+        let key = ctx.query.id;
+        let data = await collection.find({key});
         console.log(data)
         if(data.length==0) {
             ctx.body = {

@@ -12,7 +12,7 @@ const ejs = require('ejs');
 const monk = require('monk');
 
 // db
-const url = '127.0.0.1:27017/myProjectDb';
+const url = '47.93.224.33:27017/weeklyData';
 const db = monk(url);
 db.then(()=>{
 	console.log('Connected correctly to server')

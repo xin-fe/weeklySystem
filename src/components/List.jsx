@@ -13,13 +13,13 @@ export default class List extends React.Component {
 		this.columns = [
 			{
 				title:'序号',
-				dataIndex:'id'
+				dataIndex:'key'
 			},
 			{
 				title:'标题',
 				dataIndex:'title',
 				render:(text,record,index)=>{
-					let url = `#/Detail?id=${this.state.id}`
+					let url = `#/Detail?id=${record.key}`
 					return <a href={url} >{record.title}</a>
 				}
 			},

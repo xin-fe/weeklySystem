@@ -62,6 +62,10 @@ class EditableCell extends React.Component {
 
 
 export default class TableList extends React.Component {
+    state = {
+        dataSource:[],
+        count:1
+    }
 	constructor (props) {
 		super (props)
         this.columns = [
@@ -103,14 +107,14 @@ export default class TableList extends React.Component {
                 width:170,
                 dataIndex:'test_time',
                 render:(text,record,index)=>{
-                    return <DatePicker placeholder={record.start_time} onChange={this.onCellChange(index, 'test_time')} />
+                    return <DatePicker placeholder={record.test_time} onChange={this.onCellChange(index, 'test_time')} />
                 }
             },{
                 title:'上线时间',
                 width:170,
                 dataIndex:'online_time',
                 render:(text,record,index)=>{
-                    return <DatePicker placeholder={record.start_time} onChange={this.onCellChange(index, 'online_time')} />
+                    return <DatePicker placeholder={record.online_time} onChange={this.onCellChange(index, 'online_time')} />
                 }
             },{
                 title:'备注',
@@ -138,54 +142,17 @@ export default class TableList extends React.Component {
                 }
             }
         ];
-        let id = getParameter('id');
-        let add = getParameter('add');
-        let oDate = new Date();
-        let title = `${oDate.getFullYear()}年${oDate.getMonth()+1}月${oDate.getDate()}日周报`;
-        let create_time = `${oDate.getFullYear()}-${oDate.getMonth()+1}-${oDate.getDate()}`;
-        if(add) {
-            sendFetch('api/getDetail',{id},'get')
-                .then((data)=>{
-                    if(data.code === 0) {
-                        this.state = {
-                            dataSource:data.data.dataSource,
-                            count:data.data.count,
-                            key:id,
-                            id:id,
-                            title:title,
-                            create_time:create_time
-                        }
-                    }
-                })
-        } else {
-            this.state = {
-                dataSource:[
-                    {
-                        key:'0',
-                        name:'',
-                        content:'',
-                        start_time:'',
-                        test_time:'',
-                        online_time:'',
-                        remark:''
-                    }
-                ],
-                key:'',
-                count:1,
-                id:getParameter('id'),
-                title:'',
-                create_time:''
-            }
-        }
-
 	}
 	componentWillMount () {
+
+	}
+	componentDidMount () {
         let id = getParameter('id');
         let add = getParameter('add')
         let oDate = new Date();
         let title = `${oDate.getFullYear()}年${oDate.getMonth()+1}月${oDate.getDate()}日周报`;
         let create_time = `${oDate.getFullYear()}-${oDate.getMonth()+1}-${oDate.getDate()}`;
-        if(add) {
+        if(!add) {
             sendFetch('api/getDetail',{id},'get')
                 .then((data)=>{
                     if(data.code === 0) {
@@ -197,9 +164,6 @@ export default class TableList extends React.Component {
                 })
         }
         this.setState({title, create_time, key:id})
-	}
-	componentDidMount () {
-
 	}
 
     formatDate = (date)=> {

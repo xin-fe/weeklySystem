@@ -54779,6 +54779,11 @@ var TableList = function (_React$Component2) {
 
         var _this2 = _possibleConstructorReturn(this, (TableList.__proto__ || Object.getPrototypeOf(TableList)).call(this, props));
 
+        _this2.state = {
+            dataSource: [],
+            count: 1
+        };
+
         _this2.formatDate = function (date) {
             var year = date.getFullYear();
             var month = date.getMonth() + 1;
@@ -54887,14 +54892,14 @@ var TableList = function (_React$Component2) {
             width: 170,
             dataIndex: 'test_time',
             render: function render(text, record, index) {
-                return _react2.default.createElement(_datePicker2.default, { placeholder: record.start_time, onChange: _this2.onCellChange(index, 'test_time') });
+                return _react2.default.createElement(_datePicker2.default, { placeholder: record.test_time, onChange: _this2.onCellChange(index, 'test_time') });
             }
         }, {
             title: '上线时间',
             width: 170,
             dataIndex: 'online_time',
             render: function render(text, record, index) {
-                return _react2.default.createElement(_datePicker2.default, { placeholder: record.start_time, onChange: _this2.onCellChange(index, 'online_time') });
+                return _react2.default.createElement(_datePicker2.default, { placeholder: record.online_time, onChange: _this2.onCellChange(index, 'online_time') });
             }
         }, {
             title: '备注',
@@ -54924,49 +54929,15 @@ var TableList = function (_React$Component2) {
                 ) : null;
             }
         }];
-        var id = (0, _getParameter2.default)('id');
-        var add = (0, _getParameter2.default)('add');
-        var oDate = new Date();
-        var title = oDate.getFullYear() + '\u5E74' + (oDate.getMonth() + 1) + '\u6708' + oDate.getDate() + '\u65E5\u5468\u62A5';
-        var create_time = oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate();
-        if (add) {
-            (0, _fetch2.default)('api/getDetail', { id: id }, 'get').then(function (data) {
-                if (data.code === 0) {
-                    _this2.state = {
-                        dataSource: data.data.dataSource,
-                        count: data.data.count,
-                        key: id,
-                        id: id,
-                        title: title,
-                        create_time: create_time
-                    };
-                }
-            });
-        } else {
-            _this2.state = {
-                dataSource: [{
-                    key: '0',
-                    name: '',
-                    content: '',
-                    start_time: '',
-                    test_time: '',
-                    online_time: '',
-                    remark: ''
-                }],
-                key: '',
-                count: 1,
-                id: (0, _getParameter2.default)('id'),
-                title: '',
-                create_time: ''
-            };
-        }
-
         return _this2;
     }
 
     _createClass(TableList, [{
         key: 'componentWillMount',
-        value: function componentWillMount() {
+        value: function componentWillMount() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
             var _this3 = this;
 
             var id = (0, _getParameter2.default)('id');
@@ -54974,7 +54945,7 @@ var TableList = function (_React$Component2) {
             var oDate = new Date();
             var title = oDate.getFullYear() + '\u5E74' + (oDate.getMonth() + 1) + '\u6708' + oDate.getDate() + '\u65E5\u5468\u62A5';
             var create_time = oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate();
-            if (add) {
+            if (!add) {
                 (0, _fetch2.default)('api/getDetail', { id: id }, 'get').then(function (data) {
                     if (data.code === 0) {
                         _this3.setState({
@@ -54986,9 +54957,6 @@ var TableList = function (_React$Component2) {
             }
             this.setState({ title: title, create_time: create_time, key: id });
         }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
     }, {
         key: 'render',
         value: function render() {
@@ -75075,12 +75043,12 @@ var List = function (_React$Component) {
 
 		_this.columns = [{
 			title: '序号',
-			dataIndex: 'id'
+			dataIndex: 'key'
 		}, {
 			title: '标题',
 			dataIndex: 'title',
 			render: function render(text, record, index) {
-				var url = '#/Detail?id=' + _this.state.id;
+				var url = '#/Detail?id=' + record.key;
 				return _react2.default.createElement(
 					'a',
 					{ href: url },
